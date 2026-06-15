@@ -1,0 +1,10 @@
+{
+  "name": "TableBliss - Restaurant Reservation System",
+  "short_name": "TableBliss",
+  "description": "Discover and reserve the best tables at your favorite restaurants",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#d4a574",
+  "icons": []
+}
