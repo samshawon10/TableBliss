@@ -8,6 +8,7 @@ import {
   forgotPassword,
   resetPassword,
   updatePassword,
+  setPassword,
   toggleFavorite,
   getFavorites,
   deleteAccount,
@@ -25,6 +26,7 @@ router.put('/reset-password/:token', resetPassword);
 router.get('/me', protect, getMe);
 router.put('/me', protect, updateProfile);
 router.put('/update-password', protect, updatePassword);
+router.put('/set-password', protect, setPassword);
 router.get('/favorites', protect, getFavorites);
 router.put('/favorites/:restaurantId', protect, toggleFavorite);
 router.delete('/me', protect, deleteAccount);

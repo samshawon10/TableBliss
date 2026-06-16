@@ -16,6 +16,7 @@ import ResetPassword from './pages/auth/ResetPassword';
 import Restaurants from './pages/Restaurants';
 import RestaurantDetails from './pages/RestaurantDetails';
 import Contact from './pages/Contact';
+import NotFound from './pages/NotFound';
 
 // Customer Dashboard
 import Dashboard from './pages/dashboard/Dashboard';
@@ -198,6 +199,9 @@ const App = () => {
               <Route path="/owner/tables" element={<OwnerRoute><AppLayout><OwnerTables /></AppLayout></OwnerRoute>} />
               <Route path="/owner/reviews" element={<OwnerRoute><AppLayout><OwnerReviews /></AppLayout></OwnerRoute>} />
               <Route path="/owner/subscription" element={<OwnerRoute><AppLayout><OwnerSubscription /></AppLayout></OwnerRoute>} />
+
+              {/* 404 Catch-all Route */}
+              <Route path="*" element={<AppLayout><NotFound /></AppLayout>} />
             </Routes>
           </Router>
           </HelmetProvider>

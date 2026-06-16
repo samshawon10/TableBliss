@@ -1,7 +1,6 @@
 import User from '../models/User.js';
-import { generateToken, generateResetToken, getTokenExpiry, sendTokenResponse } from '../utils/token.js';
+import { generateResetToken, getTokenExpiry, sendTokenResponse } from '../utils/token.js';
 import { sendWelcomeEmail, sendResetPasswordEmail } from '../utils/emailService.js';
-import Notification from '../models/Notification.js';
 
 // @desc    Register user
 // @route   POST /api/auth/register
@@ -212,7 +211,7 @@ export const updatePassword = async (req, res, next) => {
     const user = await User.findById(req.user._id).select('+password');
 
     if (!user.password) {
-      return res.status(400).json({ success: false, message: 'Social login accounts cannot change password here' });
+      return res.status(400).json({ success: false, message: 'No password set. Please use "Set Password" option instead.' });
     }
 
     const isMatch = await user.comparePassword(req.body.currentPassword);
@@ -221,6 +220,30 @@ export const updatePassword = async (req, res, next) => {
     }
 
     user.password = req.body.newPassword;
+    await user.save();
+
+    sendTokenResponse(user, 200, res);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Set password for social login users
+// @route   PUT /api/auth/set-password
+export const setPassword = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id).select('+password');
+
+    if (user.password) {
+      return res.status(400).json({ success: false, message: 'Password already set. Use update password instead.' });
+    }
+
+    if (!req.body.password || req.body.password.length < 6) {
+      return res.status(400).json({ success: false, message: 'Password must be at least 6 characters' });
+    }
+
+    user.password = req.body.password;
+    user.authProvider = 'email';
     await user.save();
 
     sendTokenResponse(user, 200, res);

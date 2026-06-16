@@ -39,6 +39,7 @@ export const authAPI = {
   forgotPassword: (data) => api.post('/auth/forgot-password', data),
   resetPassword: (token, data) => api.put(`/auth/reset-password/${token}`, data),
   updatePassword: (data) => api.put('/auth/update-password', data),
+  setPassword: (data) => api.put('/auth/set-password', data),
   getFavorites: () => api.get('/auth/favorites'),
   toggleFavorite: (restaurantId) => api.put(`/auth/favorites/${restaurantId}`),
   deleteAccount: () => api.delete('/auth/me'),
