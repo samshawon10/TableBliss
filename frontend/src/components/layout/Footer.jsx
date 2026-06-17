@@ -93,9 +93,9 @@ const Footer = () => {
       href="https://shawonakando.dev"
       target="_blank"
       rel="noopener noreferrer"
-      className="font-medium text-white transition-colors hover:text-primary-400"
+      className="font-medium text-gray-500 transition-colors hover:text-primary-400"
     >
-      Sam Shawon
+    The Lazy Loaders
     </a>
   </p>
 </div>
