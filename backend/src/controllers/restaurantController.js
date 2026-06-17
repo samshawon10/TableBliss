@@ -139,7 +139,7 @@ export const getFeaturedRestaurants = async (req, res, next) => {
   try {
     const restaurants = await Restaurant.find({ isActive: true, isFeatured: true })
       .sort({ rating: -1 })
-      .limit(8);
+      .limit(4);
     res.status(200).json({ success: true, data: restaurants });
   } catch (error) {
     next(error);
