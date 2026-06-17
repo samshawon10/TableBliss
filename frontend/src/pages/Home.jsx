@@ -125,8 +125,8 @@ const FeaturedRestaurants = () => {
   useEffect(() => {
     const fetchFeatured = async () => {
       try {
-        const { data } = await restaurantAPI.getFeatured();
-        setRestaurants(data.data.slice(0, 4));
+        const { data } = await restaurantAPI.getAll({ limit: 4, sort: 'rating' });
+        setRestaurants(data.data);
       } catch (error) {
         console.error('Failed to fetch featured restaurants:', error);
       } finally {
