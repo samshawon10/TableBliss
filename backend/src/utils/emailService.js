@@ -1,29 +1,42 @@
 import nodemailer from 'nodemailer';
 
-const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
-  port: Number(process.env.EMAIL_PORT) || 587,
-  secure: process.env.EMAIL_PORT === '465',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+const createTransporter = () => {
+  return nodemailer.createTransport({
+    host: process.env.EMAIL_HOST,
+    port: Number(process.env.EMAIL_PORT) || 587,
+    secure: process.env.EMAIL_PORT === '465',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+};
 
 export const sendEmail = async ({ to, subject, html }) => {
   try {
+    const transporter = createTransporter();
+    
+    // "TableBliss" will show as the sender name in the recipient's email client
+    const fromAddress = process.env.EMAIL_FROM || process.env.EMAIL_USER;
+    
     const mailOptions = {
-      from: `"TableBliss" <${process.env.EMAIL_FROM}>`,
+      from: `"TableBliss" <${fromAddress}>`,
       to,
       subject,
       html,
     };
 
     const info = await transporter.sendMail(mailOptions);
-    console.log('Email sent:', info.messageId);
+    console.log('Email sent successfully:', info.messageId);
     return info;
   } catch (error) {
-    console.error('Email send error:', error);
+    console.error('Email send error details:', {
+      message: error.message,
+      code: error.code,
+      command: error.command,
+      response: error.response,
+      responseCode: error.responseCode,
+    });
     throw error;
   }
 };
@@ -71,7 +84,7 @@ export const sendReservationConfirmation = async (reservation, user) => {
         <p>Hi ${user.name},</p>
         <p>Your reservation has been confirmed. Here are the details:</p>
         <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
-          <h2 style="margin: 0 0 10px; color: #333;">${reservation.restaurant.name}</h2>
+          <h2 style="margin: 0 0 10px; color: #333;">${reservation.restaurant?.name || reservation.restaurant}</h2>
           <p><strong>Date:</strong> ${date}</p>
           <p><strong>Time:</strong> ${reservation.timeSlot}</p>
           <p><strong>Guests:</strong> ${reservation.guestCount}</p>

@@ -173,7 +173,13 @@ export const forgotPassword = async (req, res, next) => {
       user.resetPasswordToken = undefined;
       user.resetPasswordExpire = undefined;
       await user.save();
-      return res.status(500).json({ success: false, message: 'Email could not be sent' });
+      console.error('Forgot password email error:', err);
+      const isDev = process.env.NODE_ENV === 'development';
+      return res.status(500).json({ 
+        success: false, 
+        message: 'Email could not be sent',
+        ...(isDev && { error: err.message }),
+      });
     }
   } catch (error) {
     next(error);

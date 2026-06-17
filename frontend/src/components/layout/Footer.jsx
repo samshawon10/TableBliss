@@ -95,7 +95,7 @@ const Footer = () => {
       rel="noopener noreferrer"
       className="font-medium text-gray-500 transition-colors hover:text-primary-400"
     >
-    The Lazy Loaders
+    Sam Shawon
     </a>
   </p>
 </div>

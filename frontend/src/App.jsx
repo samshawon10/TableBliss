@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, matchPath, useLocation } from 'react-router-dom';
+import ScrollToTop from './components/common/ScrollToTop';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './context/AuthContext';
@@ -148,6 +149,7 @@ const App = () => {
         <AuthProvider>
           <HelmetProvider>
           <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+            <ScrollToTop />
             <RouteHelmet />
             <Routes>
               {/* Public Routes */}

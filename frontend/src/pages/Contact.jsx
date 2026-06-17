@@ -67,12 +67,13 @@ const Contact = () => {
             <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
               <HiLocationMarker className="w-6 h-6 text-primary-500 mb-3" />
               <h3 className="font-semibold mb-2 text-gray-900 dark:text-gray-100">Address</h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">123 Dining Street, New York, NY 10001</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">House 15, Road 2
+Notun Bazar, Badda, Dhaka 1212, Bangladesh</p>
             </div>
             <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
               <HiPhone className="w-6 h-6 text-primary-500 mb-3" />
               <h3 className="font-semibold mb-2 text-gray-900 dark:text-gray-100">Phone</h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">+1 (234) 567-890</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">+880 1712-345678</p>
             </div>
             <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
               <HiMail className="w-6 h-6 text-primary-500 mb-3" />
