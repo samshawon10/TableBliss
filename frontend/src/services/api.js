@@ -229,8 +229,12 @@ export const subscriptionAPI = {
 export const ownerAPI = {
   getStats: () => api.get('/owner/stats'),
   getRestaurants: () => api.get('/owner/restaurants'),
-  createRestaurant: (data) => api.post('/owner/restaurants', data),
-  updateRestaurant: (id, data) => api.put(`/owner/restaurants/${id}`, data),
+  createRestaurant: (data) => data instanceof FormData
+    ? api.post('/owner/restaurants', data, { headers: { 'Content-Type': 'multipart/form-data' } })
+    : api.post('/owner/restaurants', data),
+  updateRestaurant: (id, data) => data instanceof FormData
+    ? api.put(`/owner/restaurants/${id}`, data, { headers: { 'Content-Type': 'multipart/form-data' } })
+    : api.put(`/owner/restaurants/${id}`, data),
   deleteRestaurant: (id) => api.delete(`/owner/restaurants/${id}`),
   getReservations: (params) => api.get('/owner/reservations', { params }),
   updateReservationStatus: (id, data) => api.put(`/owner/reservations/${id}/status`, data),

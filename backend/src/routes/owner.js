@@ -44,8 +44,16 @@ router.get('/plans', async (req, res) => {
 
 // Restaurants CRUD
 router.get('/restaurants', getOwnerRestaurants);
-router.post('/restaurants', createRestaurant);
-router.put('/restaurants/:id', updateRestaurant);
+router.post('/restaurants', upload.fields([
+  { name: 'cover', maxCount: 1 },
+  { name: 'logo', maxCount: 1 },
+  { name: 'gallery', maxCount: 10 },
+]), createRestaurant);
+router.put('/restaurants/:id', upload.fields([
+  { name: 'cover', maxCount: 1 },
+  { name: 'logo', maxCount: 1 },
+  { name: 'gallery', maxCount: 10 },
+]), updateRestaurant);
 router.delete('/restaurants/:id', deleteRestaurant);
 
 // Reservations

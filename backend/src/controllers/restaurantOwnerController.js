@@ -269,8 +269,28 @@ export const getOwnerReviews = async (req, res, next) => {
 // @route   POST /api/owner/restaurants
 export const createRestaurant = async (req, res, next) => {
   try {
-    req.body.owner = req.user._id;
-    const restaurant = await Restaurant.create(req.body);
+    const restaurantData = { ...req.body, owner: req.user._id };
+
+    // Handle uploaded images
+    if (req.files) {
+      if (req.files.cover) restaurantData.images = { ...restaurantData.images, cover: req.files.cover[0].path };
+      if (req.files.logo) restaurantData.images = { ...restaurantData.images, logo: req.files.logo[0].path };
+      if (req.files.gallery) {
+        const galleryImages = req.files.gallery.map(f => f.path);
+        restaurantData.images = { ...restaurantData.images, gallery: galleryImages };
+      }
+    }
+
+    // Parse nested string fields if sent as JSON strings
+    if (typeof restaurantData.address === 'string') restaurantData.address = JSON.parse(restaurantData.address);
+    if (typeof restaurantData.contact === 'string') restaurantData.contact = JSON.parse(restaurantData.contact);
+    if (typeof restaurantData.capacity === 'string') restaurantData.capacity = JSON.parse(restaurantData.capacity);
+    if (typeof restaurantData.operatingHours === 'string') restaurantData.operatingHours = JSON.parse(restaurantData.operatingHours);
+    if (typeof restaurantData.features === 'string') restaurantData.features = JSON.parse(restaurantData.features);
+    if (typeof restaurantData.cuisine === 'string') restaurantData.cuisine = JSON.parse(restaurantData.cuisine);
+    if (typeof restaurantData.location === 'string') restaurantData.location = JSON.parse(restaurantData.location);
+
+    const restaurant = await Restaurant.create(restaurantData);
     res.status(201).json({ success: true, data: restaurant });
   } catch (error) {
     next(error);
@@ -286,7 +306,30 @@ export const updateRestaurant = async (req, res, next) => {
     if (restaurant.owner.toString() !== req.user._id.toString()) {
       return res.status(403).json({ success: false, message: 'Not authorized' });
     }
-    restaurant = await Restaurant.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+
+    const updateData = { ...req.body };
+
+    // Handle uploaded images
+    if (req.files) {
+      if (req.files.cover) updateData['images.cover'] = req.files.cover[0].path;
+      if (req.files.logo) updateData['images.logo'] = req.files.logo[0].path;
+      if (req.files.gallery) {
+        const existingGallery = restaurant.images?.gallery || [];
+        const newImages = req.files.gallery.map(f => f.path);
+        updateData['images.gallery'] = [...existingGallery, ...newImages];
+      }
+    }
+
+    // Parse nested string fields if sent as JSON strings
+    if (typeof updateData.address === 'string') updateData.address = JSON.parse(updateData.address);
+    if (typeof updateData.contact === 'string') updateData.contact = JSON.parse(updateData.contact);
+    if (typeof updateData.capacity === 'string') updateData.capacity = JSON.parse(updateData.capacity);
+    if (typeof updateData.operatingHours === 'string') updateData.operatingHours = JSON.parse(updateData.operatingHours);
+    if (typeof updateData.features === 'string') updateData.features = JSON.parse(updateData.features);
+    if (typeof updateData.cuisine === 'string') updateData.cuisine = JSON.parse(updateData.cuisine);
+    if (typeof updateData.location === 'string') updateData.location = JSON.parse(updateData.location);
+
+    restaurant = await Restaurant.findByIdAndUpdate(req.params.id, updateData, { new: true, runValidators: true });
     res.status(200).json({ success: true, data: restaurant });
   } catch (error) { next(error); }
 };
